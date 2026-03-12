@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Simulador de Cotas da Pesquisa</title>
+
+<style>
+body{
+font-family: Arial;
+max-width: 700px;
+margin: 40px auto;
+line-height:1.6;
+}
+
+input{
+padding:6px;
+margin:5px;
+width:120px;
+}
+
+button{
+padding:8px 14px;
+margin-top:10px;
+cursor:pointer;
+}
+
+.result{
+margin-top:20px;
+padding:15px;
+background:#f3f3f3;
+border-radius:8px;
+}
+
+table{
+margin-top:15px;
+border-collapse: collapse;
+width:100%;
+}
+
+td,th{
+border:1px solid #ddd;
+padding:8px;
+text-align:center;
+}
+</style>
+
+</head>
+<body>
+
+<h2>Simulador de Participação na Pesquisa</h2>
+
+<p>Simule quanto custaria comprar cotas do questionário.</p>
+
+<label>Cotas já compradas:</label><br>
+<input id="cotasVendidas" type="number" value="0"><br>
+
+<label>Cotas que deseja comprar:</label><br>
+<input id="cotasDesejadas" type="number" value="1"><br>
+
+<br>
+
+<button onclick="simular()">Calcular</button>
+
+<div class="result" id="resultado"></div>
+
+<table id="tabela"></table>
+
+<script>
+
+const precoInicial = 3500
+const incremento = 250
+
+function simular(){
+
+let vendidas = parseInt(document.getElementById("cotasVendidas").value)
+let desejadas = parseInt(document.getElementById("cotasDesejadas").value)
+
+let total = 0
+let precos = []
+
+for(let i=0;i<desejadas;i++){
+
+let n = vendidas + i
+let preco = precoInicial + incremento * n
+
+precos.push(preco)
+total += preco
+
+}
+
+let precoPrimeira = precos[0]
+let precoUltima = precos[precos.length-1]
+let precoMedio = total / desejadas
+
+document.getElementById("resultado").innerHTML = `
+
+<b>Resultado da simulação</b><br><br>
+
+Preço da primeira cota: R$ ${precoPrimeira.toFixed(2)} <br>
+Preço da última cota: R$ ${precoUltima.toFixed(2)} <br>
+Preço médio por cota: R$ ${precoMedio.toFixed(2)} <br>
+Investimento total: <b>R$ ${total.toFixed(2)}</b>
+
+`
+
+let tabela = "<tr><th>Cota</th><th>Preço</th></tr>"
+
+for(let i=0;i<precos.length;i++){
+
+tabela += `<tr>
+<td>${vendidas + i + 1}</td>
+<td>R$ ${precos[i].toFixed(2)}</td>
+</tr>`
+
+}
+
+document.getElementById("tabela").innerHTML = tabela
+
+}
+
+</script>
+
+</body>
+</html>
